@@ -2,8 +2,7 @@
 .idea
 
 # Bower
-bower_components/three.js/*
-!bower_components/three.js/build
+bower_components
 
 # Node
 node_modules
