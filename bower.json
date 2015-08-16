@@ -1,0 +1,27 @@
+{
+  "name": "webgl-dm-voronoi",
+  "version": "0.0.0",
+  "authors": [
+    "Raoul Harel <raoulhaa@gmail.com>"
+  ],
+  "description": "Voronoi diagrams on the GPU using distance-meshes.",
+  "moduleType": [
+    "es6"
+  ],
+  "keywords": [
+    "voronoi",
+    "gpu",
+    "distance",
+    "mesh",
+    "webgl"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/rharel/webgl-dm-voronoi",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
