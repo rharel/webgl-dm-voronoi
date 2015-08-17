@@ -29,7 +29,7 @@
         var h = 500;
         var voronoi = new Voronoi.Diagram({
           width: w, height: h,
-          distanceMeasure: Voronoi.Distance.euclidean
+          _distanceMeasure: Voronoi.Distance.euclidean
         });
 
         var w4 = w / 4;
@@ -60,7 +60,7 @@
         var voronoi = new Voronoi.Diagram({
           width: w, height: h,
           precision: 64,
-          distanceMeasure: Voronoi.Distance.manhattan
+          _distanceMeasure: Voronoi.Distance.manhattan
         });
 
         var w4 = w / 4;

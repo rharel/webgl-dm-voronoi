@@ -68,7 +68,7 @@
     this._3D = new Context3D(this._canvas);
   
     this._precision = options.precision;
-    this._distanceMeasure = options.distanceMeasure;
+    this._distanceMeasure = options._distanceMeasure;
   
     this._sites = [];
   
@@ -86,7 +86,7 @@
         canvas: null,
         width: 500, height: 500,
         precision: 16,
-        distanceMeasure: Distance.euclidean
+        _distanceMeasure: Distance.euclidean
       };
   
       if (typeof options === 'undefined') {
@@ -97,8 +97,8 @@
         options.width = +options.width || defaultOptions.width;
         options.height = +options.height || defaultOptions.height;
         options.precision = +options.precision || defaultOptions.precision;
-        options.distanceMeasure = options.distanceMeasure ||
-          defaultOptions.distanceMeasure;
+        options._distanceMeasure = options._distanceMeasure ||
+          defaultOptions._distanceMeasure;
   
         return options;
       }
