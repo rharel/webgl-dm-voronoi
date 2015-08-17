@@ -22,5 +22,8 @@
     "node_modules",
     "bower_components",
     "test"
-  ]
+  ],
+  "devDependencies": {
+    "jquery": "~2.1.4"
+  }
 }
