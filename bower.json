@@ -5,9 +5,6 @@
     "Raoul Harel <raoulhaa@gmail.com>"
   ],
   "description": "Voronoi diagrams on the GPU using distance-meshes.",
-  "moduleType": [
-    "es6"
-  ],
   "keywords": [
     "voronoi",
     "gpu",
@@ -25,5 +22,8 @@
   ],
   "devDependencies": {
     "jquery": "~2.1.4"
+  },
+  "dependencies": {
+    "three.js": "mrdoob/three.js"
   }
 }
