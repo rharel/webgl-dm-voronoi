@@ -30,46 +30,7 @@ PointSite.prototype.constructor = PointSite;
 
 PointSite.distanceGeometry = function(radius, nRadialSegments) {
 
-  var geometry = new THREE.Geometry();
-
-  var angleStep = Math.PI * 2 / nRadialSegments;
-
-  // vertices //
-
-  var origin = new THREE.Vector3(0, 0, 0);
-  geometry.vertices.push(origin);
-
-  for (var i = 0; i < nRadialSegments; ++i) {
-
-    var theta = angleStep * i;
-
-    var rim = new THREE.Vector2(
-      radius * Math.cos(theta),
-      radius * Math.sin(theta)
-    );
-
-    var distance = new THREE.Vector3()
-      .subVectors(origin, rim)
-      .length();
-
-    geometry.vertices.push(
-      new THREE.Vector3(
-        rim.x, rim.y, -distance
-      ));
-  }
-
-  geometry.verticesNeedUpdate = true;
-
-  // faces //
-
-  for (var j = 0; j < nRadialSegments - 1; ++j) {
-
-    geometry.faces.push(new THREE.Face3(0, j + 1, j + 2));  // ccw
-  }
-
-  geometry.faces.push(new THREE.Face3(0, nRadialSegments, 1));
-
-  geometry.elementsNeedUpdate = true;
-
-  return geometry;
+  return GeometryExtensions.triangleFan(
+    radius, radius, 2 * Math.PI, 0, nRadialSegments
+  );
 };
