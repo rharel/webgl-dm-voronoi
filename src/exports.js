@@ -9,7 +9,6 @@ if (typeof window !== 'undefined') {
 
   window.Voronoi = {
     Diagram : Diagram,
-    Distance: Distance,
     SiteType: SiteType
   };
 }
