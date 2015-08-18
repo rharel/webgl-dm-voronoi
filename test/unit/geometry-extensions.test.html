@@ -1,8 +1,16 @@
 <!DOCTYPE html>
+<!--
+/**
+ * @author Raoul Harel
+ * @license The MIT license (LICENSE.txt)
+ * @copyright 2015 Raoul Harel
+ * @url https://github.com/rharel/webgl-dm-voronoi
+ */
+-->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Voronoi.Line unit test</title>
+  <title>Voronoi.GeometryExtensions unit test</title>
 
   <link rel="stylesheet" href="../../bower_components/qunit/qunit/qunit.css">
 
@@ -92,10 +100,9 @@
         radius, depth, angle, nRadialSegments
       );
 
-      assert.equal(g.vertices.length, 4, 'has 4 vertices');
-      assert.equal(g.faces.length, 2, 'has 2 faces');
+      // verify vertices //
 
-      // verifying vertices //
+      assert.equal(g.vertices.length, 4, 'has 4 vertices');
 
       assert.equal(g.vertices[0].x, 0);
       assert.equal(g.vertices[0].y, 0);
@@ -113,7 +120,9 @@
       assert.close(g.vertices[3].y, 0, 0.001);
       assert.equal(g.vertices[3].z, -depth);
 
-      // verifying faces //
+      // verify faces //
+
+      assert.equal(g.faces.length, 2, 'has 2 faces');
 
       assert.equal(g.faces[0].a, 0);
       assert.equal(g.faces[0].b, 1);
@@ -122,6 +131,67 @@
       assert.equal(g.faces[1].a, 0);
       assert.equal(g.faces[1].b, 2);
       assert.equal(g.faces[1].c, 3);
+
+      // verify needs update //
+
+      assert.ok(g.verticesNeedUpdate);
+      assert.ok(g.elementsNeedUpdate);
+
+    });
+
+    QUnit.test('tent', function(assert) {
+
+      var width = 1, height = 2, depth = 3;
+
+      var g = GeometryExtensions.tent(width, height, depth);
+
+      // verify vertices //
+
+      assert.equal(g.vertices.length, 6, 'has 6 vertices');
+
+      assert.equal(g.vertices[0].x, 0);
+      assert.equal(g.vertices[0].y, -height / 2);
+      assert.equal(g.vertices[0].z, 0);
+
+      assert.equal(g.vertices[1].x, 0);
+      assert.equal(g.vertices[1].y,  height / 2);
+      assert.equal(g.vertices[1].z, 0);
+
+      assert.equal(g.vertices[2].x, -width / 2);
+      assert.equal(g.vertices[2].y, -height / 2);
+      assert.equal(g.vertices[2].z, -depth);
+
+      assert.equal(g.vertices[3].x, -width / 2);
+      assert.equal(g.vertices[3].y,  height / 2);
+      assert.equal(g.vertices[3].z, -depth);
+
+      assert.equal(g.vertices[4].x,  width / 2);
+      assert.equal(g.vertices[4].y, -height / 2);
+      assert.equal(g.vertices[4].z, -depth);
+
+      assert.equal(g.vertices[5].x, width / 2);
+      assert.equal(g.vertices[5].y,  height / 2);
+      assert.equal(g.vertices[5].z, -depth);
+
+      // verify faces //
+
+      assert.equal(g.faces.length, 4, 'has 4 faces');
+
+      assert.equal(g.faces[0].a, 0);
+      assert.equal(g.faces[0].b, 3);
+      assert.equal(g.faces[0].c, 2);
+
+      assert.equal(g.faces[1].a, 0);
+      assert.equal(g.faces[1].b, 1);
+      assert.equal(g.faces[1].c, 3);
+
+      assert.equal(g.faces[2].a, 0);
+      assert.equal(g.faces[2].b, 4);
+      assert.equal(g.faces[2].c, 5);
+
+      assert.equal(g.faces[3].a, 0);
+      assert.equal(g.faces[3].b, 5);
+      assert.equal(g.faces[3].c, 1);
 
       // verify needs update //
 
