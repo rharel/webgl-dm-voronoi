@@ -21,7 +21,8 @@
     "test"
   ],
   "devDependencies": {
-    "jquery": "~2.1.4"
+    "jquery": "~2.1.4",
+    "qunit": "~1.18.0"
   },
   "dependencies": {
     "three.js": "mrdoob/three.js"
