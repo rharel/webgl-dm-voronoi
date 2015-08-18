@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Voronoi.Line unit test</title>
+
+  <link rel="stylesheet" href="//code.jquery.com/qunit/qunit-1.18.0.css">
+
+  <script src="../../bower_components/three.js/build/three.js"></script>
+  <script src="../../src/geometry-extensions.js"></script>
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+
+  <script src="//code.jquery.com/qunit/qunit-1.18.0.js"></script>
+  <script src="../../node_modules/qunit-assert-close/qunit-assert-close.js">
+  </script>
+
+  <script>
+
+    QUnit.test('triangleFan cone', function(assert) {
+
+      var radius = 1;
+      var depth = 2;
+      var angle = 2 * Math.PI;
+      var angleOffset = 0;
+      var nRadialSegments = 4;
+
+      var g = GeometryExtensions.triangleFan(
+        radius, depth, angle, angleOffset, nRadialSegments
+      );
+
+      assert.equal(g.vertices.length, 5, 'has 5 vertices');
+      assert.equal(g.faces.length, 4, 'has 4 faces');
+
+      // verifying vertices //
+
+      assert.equal(g.vertices[0].x, 0);
+      assert.equal(g.vertices[0].y, 0);
+
+      assert.close(g.vertices[1].x, 1, 0.001);
+      assert.close(g.vertices[1].y, 0, 0.001);
+
+      assert.close(g.vertices[2].x, 0, 0.001);
+      assert.close(g.vertices[2].y, 1, 0.001);
+
+      assert.close(g.vertices[3].x, -1, 0.001);
+      assert.close(g.vertices[3].y, 0, 0.001);
+
+      assert.close(g.vertices[4].x, 0, 0.001);
+      assert.close(g.vertices[4].y, -1, 0.001);
+
+      // verifying faces //
+
+      assert.equal(g.faces[0].a, 0);
+      assert.equal(g.faces[0].b, 1);
+      assert.equal(g.faces[0].c, 2);
+
+      assert.equal(g.faces[1].a, 0);
+      assert.equal(g.faces[1].b, 2);
+      assert.equal(g.faces[1].c, 3);
+
+      assert.equal(g.faces[2].a, 0);
+      assert.equal(g.faces[2].b, 3);
+      assert.equal(g.faces[2].c, 4);
+
+      assert.equal(g.faces[3].a, 0);
+      assert.equal(g.faces[3].b, 4);
+      assert.equal(g.faces[3].c, 1);
+
+      // verify needs update //
+
+      assert.ok(g.verticesNeedUpdate);
+      assert.ok(g.elementsNeedUpdate);
+
+    });
+  </script>
+</body>
+</html>
