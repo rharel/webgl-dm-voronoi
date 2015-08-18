@@ -10,15 +10,16 @@ var GeometryExtensions = {
   triangleFan: function(radius, depth, angle, nRadialSegments) {
 
     var geometry = new THREE.Geometry();
-
-    var angleStep = angle / nRadialSegments;
+    var origin = new THREE.Vector3(0, 0, 0);
 
     // vertices //
 
-    var origin = new THREE.Vector3(0, 0, 0);
     geometry.vertices.push(origin);
 
-    for (var i = 0; i < nRadialSegments; ++i) {
+    var angleStep = angle / nRadialSegments;
+    var nRimVertices = nRadialSegments + 1;
+
+    for (var i = 0; i < nRimVertices; ++i) {
 
       var theta = angleStep * i;
 
@@ -37,14 +38,14 @@ var GeometryExtensions = {
 
     // faces //
 
-    for (var j = 0; j < nRadialSegments - 1; ++j) {
+    for (var j = 0; j < nRadialSegments; ++j) {
 
       geometry.faces.push(new THREE.Face3(0, j + 1, j + 2));  // ccw
     }
 
-    geometry.faces.push(new THREE.Face3(0, nRadialSegments, 1));
-
     geometry.elementsNeedUpdate = true;
+
+    geometry.mergeVertices();  // i.e. if angle is 2pi, removes 1 duplicate
 
     return geometry;
   }
