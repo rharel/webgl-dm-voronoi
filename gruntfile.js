@@ -65,7 +65,6 @@ module.exports = function(grunt) {
 
       release: {
         src: [
-          '<%= src_dir %>/extensions.js',
           '<%= src_dir %>/core/*.js',
           '<%= src_dir %>/sites/SIte.js',
           '<%= src_dir %>/sites/PointSite.js',
