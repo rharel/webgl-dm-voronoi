@@ -31,6 +31,6 @@ PointSite.prototype.constructor = PointSite;
 PointSite.distanceGeometry = function(radius, nRadialSegments) {
 
   return GeometryExtensions.triangleFan(
-    radius, radius, 2 * Math.PI, 0, nRadialSegments
+    radius, radius, 2 * Math.PI, nRadialSegments
   );
 };

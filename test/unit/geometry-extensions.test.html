@@ -24,11 +24,10 @@
       var radius = 1;
       var depth = 2;
       var angle = 2 * Math.PI;
-      var angleOffset = 0;
       var nRadialSegments = 4;
 
       var g = GeometryExtensions.triangleFan(
-        radius, depth, angle, angleOffset, nRadialSegments
+        radius, depth, angle, nRadialSegments
       );
 
       assert.equal(g.vertices.length, 5, 'has 5 vertices');
@@ -73,6 +72,22 @@
 
       assert.ok(g.verticesNeedUpdate);
       assert.ok(g.elementsNeedUpdate);
+
+    });
+
+    QUnit.test('triangleFan half-cone', function(assert) {
+
+      var radius = 1;
+      var depth = 2;
+      var angle = 2 * Math.PI;
+      var nRadialSegments = 4;
+
+      var g = GeometryExtensions.triangleFan(
+        radius, depth, angle, nRadialSegments
+      );
+
+      assert.equal(g.vertices.length, 5, 'has 5 vertices');
+      assert.equal(g.faces.length, 4, 'has 4 faces');
 
     });
   </script>

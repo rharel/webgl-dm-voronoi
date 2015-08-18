@@ -7,7 +7,7 @@
 
 var GeometryExtensions = {
 
-  triangleFan: function(radius, depth, angle, angleOffset, nRadialSegments) {
+  triangleFan: function(radius, depth, angle, nRadialSegments) {
 
     var geometry = new THREE.Geometry();
 
@@ -20,7 +20,7 @@ var GeometryExtensions = {
 
     for (var i = 0; i < nRadialSegments; ++i) {
 
-      var theta = angleOffset + angleStep * i;
+      var theta = angleStep * i;
 
       var rim = new THREE.Vector2(
         radius * Math.cos(theta),
