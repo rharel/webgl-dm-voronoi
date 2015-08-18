@@ -19,7 +19,6 @@ function Diagram(options) {
   this._3D = new Context3D(this._canvas);
 
   this._precision = options.precision;
-  this._distanceMeasure = options._distanceMeasure;
 
   this._sites = [];
 
@@ -28,8 +27,7 @@ function Diagram(options) {
   this._pointDistanceGeometry =
     PointSite.distanceGeometry(
       this._maxDistance,
-      this._precision,
-      this._distanceMeasure
+      this._precision
   );
 
 
@@ -37,8 +35,7 @@ function Diagram(options) {
     var defaultOptions = {
       canvas: null,
       width: 500, height: 500,
-      precision: 16,
-      _distanceMeasure: Distance.euclidean
+      precision: 16
     };
 
     if (typeof options === 'undefined') {
@@ -49,8 +46,6 @@ function Diagram(options) {
       options.width = +options.width || defaultOptions.width;
       options.height = +options.height || defaultOptions.height;
       options.precision = +options.precision || defaultOptions.precision;
-      options._distanceMeasure =
-        options._distanceMeasure || defaultOptions._distanceMeasure;
 
       return options;
     }
