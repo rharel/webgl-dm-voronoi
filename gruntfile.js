@@ -25,6 +25,13 @@ module.exports = function(grunt) {
       ]
     },
 
+    qunit: {
+      options: {
+        timeout: 3000
+      },
+      all: ['<%= test_dir %>/unit/**/*.test.html']
+    },
+
     clean: {
       dist: {
         src: [
@@ -96,6 +103,7 @@ module.exports = function(grunt) {
     }
   };
 
+  grunt.registerTask('test', 'qunit:all');
   grunt.registerTask('build', [
     'clean:dist',
     'concat:release',
@@ -104,10 +112,12 @@ module.exports = function(grunt) {
   grunt.registerTask('minify', 'uglify:release');
   grunt.registerTask('dev', [
     'jshint:all',
+    'test',
     'build'
   ]);
   grunt.registerTask('release', [
     'jshint:all',
+    'test',
     'build',
     'minify'
   ]);
