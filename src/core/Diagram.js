@@ -25,10 +25,11 @@ function Diagram(options) {
 
   this._maxDistance = Math.max(this._canvas.width, this._canvas.height);
 
-  this._pointDG = PointSite.distanceGeometry(
-    this._maxDistance,
-    this._precision,
-    this._distanceMeasure
+  this._pointDistanceGeometry =
+    PointSite.distanceGeometry(
+      this._maxDistance,
+      this._precision,
+      this._distanceMeasure
   );
 
 
@@ -79,7 +80,10 @@ Diagram.prototype = {
       color = new THREE.Color(color.r, color.g, color.b);
     }
 
-    var mesh = new THREE.Mesh(this._pointDG, this._3D.material(color));
+    var mesh = new THREE.Mesh(
+      this._pointDistanceGeometry,
+      this._3D.material(color)
+    );
     var site = new PointSite(x, y, mesh);
 
     this._sites.push(site);
@@ -91,7 +95,6 @@ Diagram.prototype = {
   get canvas() { return this._canvas; },
 
   get precision() { return this._precision; },
-  set precision(value) { this._precision = value; },
 
   get nSites() { return this._sites.length; }
 };
