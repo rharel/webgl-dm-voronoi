@@ -28,73 +28,48 @@ PointSite.prototype = Object.create(Site.prototype, {
 
 PointSite.prototype.constructor = PointSite;
 
-PointSite.distanceGeometry = function(radius, precision, measure) {
-  switch (measure) {
+PointSite.distanceGeometry = function(radius, nRadialSegments) {
 
-    case Distance.euclidean: {
+  var geometry = new THREE.Geometry();
 
-      return PointSite.euclideanDistanceGeometry(radius, precision);
-    }
+  var angleStep = Math.PI * 2 / nRadialSegments;
 
-    default: {
+  // vertices //
 
-      var geometry = new THREE.Geometry();
+  var origin = new THREE.Vector3(0, 0, 0);
+  geometry.vertices.push(origin);
 
-      var nRadialSegments = precision;
-      var angleStep = Math.PI * 2 / nRadialSegments;
+  for (var i = 0; i < nRadialSegments; ++i) {
 
-      // vertices //
+    var theta = angleStep * i;
 
-      var origin = new THREE.Vector3(0, 0, 0);
-      geometry.vertices.push(origin);
+    var rim = new THREE.Vector2(
+      radius * Math.cos(theta),
+      radius * Math.sin(theta)
+    );
 
-      for (var i = 0; i < nRadialSegments; ++i) {
+    var distance = new THREE.Vector3()
+      .subVectors(origin, rim)
+      .length();
 
-        var theta = angleStep * i;
-
-        var rim = new THREE.Vector2(
-          radius * Math.cos(theta),
-          radius * Math.sin(theta)
-        );
-
-        geometry.vertices.push(
-          new THREE.Vector3(
-            rim.x, rim.y, -measure(origin, rim)
-          ));
-      }
-
-      geometry.verticesNeedUpdate = true;
-
-      // faces //
-
-      for (var j = 0; j < nRadialSegments - 1; ++j) {
-
-        geometry.faces.push(new THREE.Face3(0, j + 1, j + 2));  // ccw
-      }
-
-      geometry.faces.push(new THREE.Face3(0, nRadialSegments, 1));
-
-      geometry.elementsNeedUpdate = true;
-
-      return geometry;
-    }
+    geometry.vertices.push(
+      new THREE.Vector3(
+        rim.x, rim.y, -distance
+      ));
   }
-};
 
-PointSite.euclideanDistanceGeometry = function(radius, precision) {
+  geometry.verticesNeedUpdate = true;
 
-  var geometry = THREE.CylinderGeometry.Cone(radius, radius, precision);
+  // faces //
 
-  var R = new THREE.Matrix4();
-  R.makeRotationX(Math.PI / 2);
+  for (var j = 0; j < nRadialSegments - 1; ++j) {
 
-  var T = new THREE.Matrix4();
-  T.makeTranslation(0, -radius / 2, 0);
+    geometry.faces.push(new THREE.Face3(0, j + 1, j + 2));  // ccw
+  }
 
-  var M = new THREE.Matrix4();
-  M.multiplyMatrices(R, T);
+  geometry.faces.push(new THREE.Face3(0, nRadialSegments, 1));
 
-  geometry.applyMatrix(M);
+  geometry.elementsNeedUpdate = true;
 
   return geometry;
 };
