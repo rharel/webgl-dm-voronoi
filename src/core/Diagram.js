@@ -33,6 +33,7 @@ function Diagram(options) {
   };
 
   this._markerLayer = new MarkerLayer();
+  this._markerLayer.visible = options.markers;
   this._3d.add(this._markerLayer.origin);
 
   function _parseOptions(options) {
@@ -41,7 +42,7 @@ function Diagram(options) {
       canvas: null,
       width: 500, height: 500,
       precision: 16,
-      showSiteMarkers: false
+      markers: true
     };
 
     if (typeof options === 'undefined') {
@@ -52,6 +53,7 @@ function Diagram(options) {
       options.width = +options.width || defaultOptions.width;
       options.height = +options.height || defaultOptions.height;
       options.precision = +options.precision || defaultOptions.precision;
+      options.markers = !!options.markers;
 
       return options;
     }
