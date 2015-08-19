@@ -5,13 +5,23 @@
  * @url https://github.com/rharel/webgl-dm-voronoi
  */
 
-function PointSite(x, y, mesh) {
+function PointSite(x, y, radius, geometry, material) {
 
-  Site.call(this, SiteType.point, mesh);
+  Site.call(this, SiteType.point, material.color);
+
+  this._mesh = new THREE.Mesh(geometry, material);
+  this._mesh.scale.set(radius, radius, radius);
 
   this.x = x;
   this.y = y;
 }
+
+PointSite.distanceGeometry = function(nRadialSegments) {
+
+  return GeometryExtensions.triangleFan(
+    1, 1, 2 * Math.PI, nRadialSegments
+  );
+};
 
 PointSite.prototype = Object.create(Site.prototype, {
 
@@ -23,14 +33,11 @@ PointSite.prototype = Object.create(Site.prototype, {
   y: {
     get: function y() { return this._mesh.position.y; },
     set: function y(value) { this._mesh.position.y = value; }
+  },
+
+  origin: {
+    get: function origin() { return this._mesh; }
   }
 });
 
 PointSite.prototype.constructor = PointSite;
-
-PointSite.distanceGeometry = function(radius, nRadialSegments) {
-
-  return GeometryExtensions.triangleFan(
-    radius, radius, 2 * Math.PI, nRadialSegments
-  );
-};

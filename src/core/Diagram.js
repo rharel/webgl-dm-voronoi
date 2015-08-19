@@ -24,18 +24,20 @@ function Diagram(options) {
 
   this._maxDistance = Math.max(this._canvas.width, this._canvas.height);
 
-  this._pointDistanceGeometry =
-    PointSite.distanceGeometry(
-      this._maxDistance,
-      this._precision
-  );
+  this._pointDistanceGeometry = PointSite.distanceGeometry(this._precision);
 
+  this._lineDistancGeometry = {
+    edge: LineSite.edgeDistanceGeometry(this._precision),
+    endpoint: LineSite.endpointDistanceGeometry(this._precision)
+  };
 
   function _parseOptions(options) {
+
     var defaultOptions = {
       canvas: null,
       width: 500, height: 500,
-      precision: 16
+      precision: 16,
+      showSiteMarkers: false
     };
 
     if (typeof options === 'undefined') {
@@ -52,6 +54,7 @@ function Diagram(options) {
   }
 
   function _createCanvas(width, height) {
+
     var canvas = document.createElement('canvas');
 
     canvas.width = width;
@@ -66,23 +69,47 @@ Diagram.prototype = {
 
   constructor: Diagram,
 
-  point: function(x, y, color) {
-
+  _parseColor: function(color) {
     if (typeof color === 'string') {
-      color = new THREE.Color(color);
+       return new THREE.Color(color);
     }
     else {
-      color = new THREE.Color(color.r, color.g, color.b);
+      return new THREE.Color(color.r, color.g, color.b);
     }
+  },
 
-    var mesh = new THREE.Mesh(
+  point: function(x, y, color) {
+
+    color = this._parseColor(color);
+
+    var site = new PointSite(
+      x, y,
+      this._maxDistance,
       this._pointDistanceGeometry,
       this._3D.material(color)
     );
-    var site = new PointSite(x, y, mesh);
 
     this._sites.push(site);
-    this._3D.add(mesh);
+    this._3D.add(site.origin);
+
+    return site;
+  },
+
+  line: function(a, b, color) {
+
+    color = this._parseColor(color);
+
+    var site = new LineSite(
+      a, b,
+      this._maxDistance,
+      this._lineDistancGeometry,
+      this._3D.material(color)
+    );
+
+    this._sites.push(site);
+    this._3D.add(site.origin);
+
+    return site;
   },
 
   render: function() { this._3D.render(); },
@@ -91,5 +118,5 @@ Diagram.prototype = {
 
   get precision() { return this._precision; },
 
-  get nSites() { return this._sites.length; }
+  get nSites() { return this._sites.length; },
 };
