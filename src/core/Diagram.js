@@ -16,11 +16,12 @@ function Diagram(options) {
     this._canvas = options.canvas;
   }
 
-  this._3D = new Context3D(this._canvas);
+  this._3d = new Context3D(this._canvas);
 
   this._precision = options.precision;
 
   this._sites = [];
+  this._id = 0;
 
   this._maxDistance = Math.max(this._canvas.width, this._canvas.height);
 
@@ -30,6 +31,9 @@ function Diagram(options) {
     edge: LineSite.edgeDistanceGeometry(this._precision),
     endpoint: LineSite.endpointDistanceGeometry(this._precision)
   };
+
+  this._markerLayer = new MarkerLayer();
+  this._3d.add(this._markerLayer.origin);
 
   function _parseOptions(options) {
 
@@ -83,14 +87,17 @@ Diagram.prototype = {
     color = this._parseColor(color);
 
     var site = new PointSite(
+      this._id++,
       x, y,
       this._maxDistance,
       this._pointDistanceGeometry,
-      this._3D.material(color)
+      this._3d.material(color)
     );
 
     this._sites.push(site);
-    this._3D.add(site.origin);
+    this._3d.add(site.origin);
+
+    this._markerLayer.add(site);
 
     return site;
   },
@@ -103,20 +110,22 @@ Diagram.prototype = {
       a, b,
       this._maxDistance,
       this._lineDistancGeometry,
-      this._3D.material(color)
+      this._3d.material(color)
     );
 
     this._sites.push(site);
-    this._3D.add(site.origin);
+    this._3d.add(site.origin);
 
     return site;
   },
 
-  render: function() { this._3D.render(); },
+  render: function() { this._3d.render(); },
 
   get canvas() { return this._canvas; },
 
   get precision() { return this._precision; },
 
   get nSites() { return this._sites.length; },
+
+  get markers() { return this._markerLayer; }
 };
