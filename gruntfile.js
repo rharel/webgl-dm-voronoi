@@ -76,6 +76,7 @@ module.exports = function(grunt) {
           '<%= src_dir %>/core/*.js',
           '<%= src_dir %>/sites/SIte.js',
           '<%= src_dir %>/sites/PointSite.js',
+          '<%= src_dir %>/sites/LineSite.js',
           '<%= src_dir %>/exports.js'
         ],
         dest: '<%= dist_dir %>/voronoi.js'
