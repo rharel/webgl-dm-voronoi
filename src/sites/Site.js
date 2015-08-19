@@ -5,10 +5,10 @@
  * @url https://github.com/rharel/webgl-dm-voronoi
  */
 
-function Site(type, mesh) {
+function Site(type, color) {
 
   this._type = type;
-  this._mesh = mesh;
+  this._color = color;
 }
 
 Site.prototype = {
@@ -16,7 +16,7 @@ Site.prototype = {
   constructor: Site,
 
   get type() { return this._type; },
-  get color() { return this._mesh.material.color; }
+  get color() { return this._color; }
 };
 
-var SiteType = { point: 0 };
+var SiteType = { point: 0, line: 1 };
