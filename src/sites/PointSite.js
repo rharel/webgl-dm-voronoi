@@ -5,9 +5,9 @@
  * @url https://github.com/rharel/webgl-dm-voronoi
  */
 
-function PointSite(x, y, radius, geometry, material) {
+function PointSite(id, x, y, radius, geometry, material) {
 
-  Site.call(this, SiteType.point, material.color);
+  Site.call(this, id, SiteType.point, material.color);
 
   this._mesh = new THREE.Mesh(geometry, material);
   this._mesh.scale.set(radius, radius, radius);

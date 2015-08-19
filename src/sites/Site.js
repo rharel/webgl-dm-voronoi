@@ -5,8 +5,9 @@
  * @url https://github.com/rharel/webgl-dm-voronoi
  */
 
-function Site(type, color) {
+function Site(id, type, color) {
 
+  this._id = id;
   this._type = type;
   this._color = color;
 }
@@ -15,6 +16,7 @@ Site.prototype = {
 
   constructor: Site,
 
+  get id() { return this._id; },
   get type() { return this._type; },
   get color() { return this._color; }
 };
