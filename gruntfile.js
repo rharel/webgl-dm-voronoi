@@ -73,10 +73,15 @@ module.exports = function(grunt) {
       release: {
         src: [
           '<%= src_dir %>/geometry-extensions.js',
-          '<%= src_dir %>/core/*.js',
-          '<%= src_dir %>/sites/SIte.js',
+
+          '<%= src_dir %>/sites/Site.js',
           '<%= src_dir %>/sites/PointSite.js',
           '<%= src_dir %>/sites/LineSite.js',
+
+          '<%= src_dir %>/core/Context3D.js',
+          '<%= src_dir %>/core/MarkerLayer.js',
+          '<%= src_dir %>/core/Diagram.js',
+
           '<%= src_dir %>/exports.js'
         ],
         dest: '<%= dist_dir %>/voronoi.js'
