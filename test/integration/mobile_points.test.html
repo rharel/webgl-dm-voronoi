@@ -188,9 +188,9 @@
     };
   </script>
 
-  <h3>Low Precision</h3>
+  <h3>Low precision (left) and high precision (right)</h3>
 
-  <div id="low-precision-test">
+  <div id="test-content">
 
     <script>
       (function() {
@@ -204,7 +204,7 @@
         });
 
         document
-          .getElementById('low-precision-test')
+          .getElementById('test-content')
           .appendChild(voronoi.canvas);
 
         var sim = new Simulation(
@@ -215,11 +215,6 @@
 
       })();
     </script>
-  </div>
-
-  <h3>High Precision</h3>
-
-  <div id="high-precision-test">
 
     <script>
       (function() {
@@ -233,7 +228,7 @@
         });
 
         document
-          .getElementById('high-precision-test')
+          .getElementById('test-content')
           .appendChild(voronoi.canvas);
 
         var sim = new Simulation(
