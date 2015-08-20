@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/rharel/webgl-dm-voronoi.svg)](https://travis-ci.org/rharel/webgl-dm-voronoi)
 [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com)
 
 # Installation
@@ -23,6 +24,12 @@ var voronoi = new Voronoi.Diagram(options);
 | height | 500 | Analogous to the `width` option above.
 | precision | 16 | Positive integer which controls the level of detail of the distance mesh. The higher, the more detailed will the mesh be, producing a better rendering at the cost of performance.
 | markers | true | Boolean indicating whether site markers are initially visible.
+
+If you use an existing canvas, just pass its DOM element in the `canvas` option. Otherwise, you will need to append the canvas the voronoi diagram created yourself:
+
+```javascript
+document.appendChild(voronoi.canvas);
+```
 
 ## Populate
 
