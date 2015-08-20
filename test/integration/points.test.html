@@ -20,172 +20,37 @@
 <body>
 
   <script>
-    // globals //
-
+    var CANVAS_WIDTH = 500, CANVAS_HEIGHT = 500;
     var N_POINTS = 10;
-
-    var VELOCITY_BOUNDS = {  // px / s
-      min: 20,
-      max: 40
-    };
-
-    var STEP_INTERVAL = 30;  // ms
 
     function randomInRange(a, b) { return a + Math.random() * (b - a); }
 
-
     var randomColor = (function() {
 
-      function mix(a, b) { return (a + b) / 2; }
+      function mix(a, b) {
+        return (a + b) / 2;
+      }
 
-      return function() {
+      return function () {
         return {
           r: mix(Math.random(), 1),
           g: mix(Math.random(), 1),
           b: mix(Math.random(), 1)
         };
-      }
+      };
     })();
 
-    function Simulation(voronoi, nPoints, velocityBounds, stepInterval) {
+    function populate(voronoi) {
 
-      this._voronoi = voronoi;
-      this._nPoints = nPoints;
-      this._velocityBounds = velocityBounds;
-      this._stepInterval = stepInterval;
+      for (var i = 0; i < N_POINTS; ++i) {
 
-      this._mobilePoints = [];
-
-      this._lastUpdate = new Date();
-      this._renderPending = true;
-    }
-
-    Simulation.prototype = {
-
-      constructor: Simulation,
-
-      _spawn: function() {
-
-        var boundingBox = {
-          min: {x: 0, y: 0},
-          max: {
-            x: this._voronoi.canvas.width,
-            y: this._voronoi.canvas.height
-          }
-        };
-
-        this._mobilePoints = [];
-
-        for (var i = 0; i < this._nPoints; ++i) {
-
-          var site = this._voronoi.point(
-            randomInRange(boundingBox.min.x, boundingBox.max.x),
-            randomInRange(boundingBox.min.y, boundingBox.max.y),
-            randomColor()
-          );
-
-          var velocity = {
-            x: randomInRange(
-              this._velocityBounds.min,
-              this._velocityBounds.max
-            ),
-            y: randomInRange(
-              this._velocityBounds.min,
-              this._velocityBounds.max
-            )
-          };
-
-          this._mobilePoints.push(
-            new MobilePoint(site, velocity, boundingBox)
-          );
-        }
-      },
-
-      _step: function() {
-
-        var now = new Date();
-        var dt = (now - this._lastUpdate) / 1000;
-
-        this._mobilePoints.forEach(function(p) {
-          p.step(dt);
-        });
-
-        this._lastUpdate = now;
-        this._renderPending = true;
-
-        setTimeout(this._step.bind(this), this._stepInterval);
-      },
-
-      _render: function() {
-
-        requestAnimationFrame(this._render.bind(this));
-
-        if (this._renderPending) {
-
-          if (this._voronoi.markers.visible) {
-            this._voronoi.markers.update();
-          }
-
-          this._voronoi.render();
-          this._renderPending = false;
-        }
-      },
-
-      start: function() {
-
-        this._spawn();
-        this._step();
-        this._render();
+        voronoi.point(
+          randomInRange(0, CANVAS_WIDTH),
+          randomInRange(0, CANVAS_HEIGHT),
+          randomColor()
+        );
       }
-    };
-
-
-    function MobilePoint(site, velocity, boundingBox) {
-
-      this._site = site;
-      this._velocity = velocity;
-      this._bbox = boundingBox;
     }
-
-    MobilePoint.prototype = {
-
-      constructor: MobilePoint,
-
-      _bounce: function(axis, value) {
-
-        if (value < this._bbox.min[axis]) {
-
-          this._velocity[axis] = -this._velocity[axis];
-          return this._bbox.min[axis];
-        }
-
-        else if (value > this._bbox.max[axis]) {
-
-          this._velocity[axis] = -this._velocity[axis];
-          return this._bbox.max[axis]
-        }
-
-        else { return value; }
-      },
-
-      _bounceX: function(value) { return this._bounce('x', value); },
-      _bounceY: function(value) { return this._bounce('y', value); },
-
-      step: function(dt) {
-
-        var x = this._site.x + this._velocity.x * dt;
-        var y = this._site.y + this._velocity.y * dt;
-
-        x = this._bounceX(x);
-        y = this._bounceY(y);
-
-        this._site.x = x;
-        this._site.y = y;
-      },
-
-      get x() { return this._site.x; },
-      get y() { return this._site.y; }
-    };
   </script>
 
   <h3>Low precision (left) and high precision (right)</h3>
@@ -195,23 +60,20 @@
     <script>
       (function() {
 
-        var w = 500;
-        var h = 500;
         var voronoi = new Voronoi.Diagram({
-          width: w, height: h,
+          width: CANVAS_WIDTH, height: CANVAS_HEIGHT,
           precision: 8,
           markers: true
         });
 
+        populate(voronoi);
+
+        voronoi.markers.update();
+        voronoi.render();
+
         document
           .getElementById('test-content')
           .appendChild(voronoi.canvas);
-
-        var sim = new Simulation(
-          voronoi, N_POINTS, VELOCITY_BOUNDS, STEP_INTERVAL
-        );
-
-        sim.start();
 
       })();
     </script>
@@ -219,23 +81,20 @@
     <script>
       (function() {
 
-        var w = 500;
-        var h = 500;
         var voronoi = new Voronoi.Diagram({
-          width: w, height: h,
+          width: CANVAS_WIDTH, height: CANVAS_HEIGHT,
           precision: 32,
           markers: true
         });
 
+        populate(voronoi);
+
+        voronoi.markers.update();
+        voronoi.render();
+
         document
           .getElementById('test-content')
           .appendChild(voronoi.canvas);
-
-        var sim = new Simulation(
-          voronoi, N_POINTS, VELOCITY_BOUNDS, STEP_INTERVAL
-        );
-
-        sim.start();
 
       })();
     </script>
