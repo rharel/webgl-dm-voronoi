@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/rharel/webgl-dm-voronoi.svg)](https://travis-ci.org/rharel/webgl-dm-voronoi)
 [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com)
 
 # Installation
