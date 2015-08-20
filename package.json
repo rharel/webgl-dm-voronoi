@@ -31,5 +31,8 @@
     "grunt-contrib-uglify": "^0.9.1",
     "grunt-wrap": "^0.3.0",
     "qunit-assert-close": "^2.0.0"
+  },
+  "scripts": {
+    "test": "grunt test"
   }
 }
