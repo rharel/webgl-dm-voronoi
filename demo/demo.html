@@ -52,6 +52,8 @@
         30  // refresh interval (ms)
       );
 
+      // resize //
+
       function onResize() {
 
         var w = window.innerWidth;
@@ -68,6 +70,8 @@
 
       $(window).resize(onResize);
 
+      // animation toggle //
+
       var $animateToggle = $('#animation-toggle');
 
       function updateAnimation() {
@@ -77,6 +81,23 @@
       }
 
       $animateToggle.change(updateAnimation);
+
+      // marker toggle //
+
+      var $markerToggle = $('#marker-toggle');
+
+      function updateMarkers() {
+
+        voronoi.markers.visible = $markerToggle.prop('checked');
+
+        if (voronoi.markers.visible) { voronoi.markers.update(); }
+
+        voronoi.render();
+      }
+
+      $markerToggle.change(updateMarkers);
+
+      // site addition //
 
       var $addButton = $('#add-button');
       $addButton.click(function() {
@@ -92,6 +113,8 @@
         }
       });
 
+      // site removal //
+
       var $removeButton = $('#remove-button');
       $removeButton.click(function() {
 
@@ -105,6 +128,8 @@
           voronoi.render();
         }
       });
+
+      // kickstart //
 
       updateAnimation();
     });
@@ -128,6 +153,12 @@
              data-on="Animation On" data-off="Animation Off">
     </label>
 
+    <label>
+      <input id="marker-toggle"
+             type="checkbox" checked
+             data-toggle="toggle"
+             data-on="Markers On" data-off="Markers Off">
+    </label>
   </div>
 
   <canvas id="demo-canvas"></canvas>
