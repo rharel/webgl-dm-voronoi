@@ -31,15 +31,18 @@
 
     QUnit.test('constructor', function(assert) {
 
+      var id = 0;
       var x = 0, y = 1;
       var radius = 2;
 
       var geometry = new THREE.SphereGeometry(1);
       var material = new THREE.MeshBasicMaterial();
 
-      var point = new PointSite(x, y, radius, geometry, material);
+      var point = new PointSite(id, x, y, radius, geometry, material);
 
+      assert.equal(point.id, id, 'ids match');
       assert.equal(point.type, SiteType.point, 'site type is point');
+      assert.equal(point.color, material.color, 'colors match');
 
       verifyTransform(assert, point, x, y, radius);
     });
@@ -49,7 +52,7 @@
       var geometry = new THREE.SphereGeometry(1);
       var material = new THREE.MeshBasicMaterial();
 
-      var point = new PointSite(0, 1, 4, geometry, material);
+      var point = new PointSite(0, 0, 1, 4, geometry, material);
 
       // modify and verify modifications //
 
