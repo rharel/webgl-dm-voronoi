@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<!--
+/**
+ * @author Raoul Harel
+ * @license The MIT license (LICENSE.txt)
+ * @copyright 2015 Raoul Harel
+ * @url https://github.com/rharel/webgl-dm-voronoi
+ */
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <title>Voronoi using distance meshes</title>
+
+  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="../bower_components/bootstrap-toggle/css/bootstrap-toggle.min.css">
+
+  <link rel="stylesheet" href="css/demo.css">
+
+  <script src="../bower_components/jquery/dist/jquery.js"></script>
+
+  <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js" ></script>
+  <script src="../bower_components/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
+
+  <script src="../bower_components/three.js/build/three.js"></script>
+
+  <!--<script src="../dist/voronoi.js"></script>-->
+  <script src="../dist/voronoi.min.js"></script>
+
+  <script src="js/Random.js"></script>
+  <script src="js/MobilePoint.js"></script>
+  <script src="js/Simulation.js"></script>
+
+  <script>
+    $(document).ready(function() {
+
+      var $canvas = $('#demo-canvas');
+      $canvas[0].width = window.innerWidth;
+      $canvas[0].height = window.innerHeight;
+
+      var voronoi = new Voronoi.Diagram({
+        canvas: $canvas[0],
+        precision: 32,
+        markers: true
+      });
+
+      var sim = new Simulation(
+        voronoi,
+        {min: 4, max: 128},  // point limits
+        {min: 20, max: 40},  // velocity limits
+        30  // refresh interval (ms)
+      );
+
+      // resize //
+
+      function onResize() {
+
+        var w = window.innerWidth;
+        var h = window.innerHeight;
+
+        $canvas[0].width = w;
+        $canvas[0].height = h;
+
+        voronoi.resize();
+
+        sim.boundingBox.max.x = w;
+        sim.boundingBox.max.y = h;
+      }
+
+      $(window).resize(onResize);
+
+      // animation toggle //
+
+      var $animateToggle = $('#animation-toggle');
+
+      function updateAnimation() {
+
+        if ($animateToggle.prop('checked')) { sim.start(); }
+        else { sim.stop(); }
+      }
+
+      $animateToggle.change(updateAnimation);
+
+      // marker toggle //
+
+      var $markerToggle = $('#marker-toggle');
+
+      function updateMarkers() {
+
+        voronoi.markers.visible = $markerToggle.prop('checked');
+
+        voronoi.render();
+      }
+
+      $markerToggle.change(updateMarkers);
+
+      // site addition //
+
+      var $addButton = $('#add-button');
+      $addButton.click(function() {
+
+        var target = voronoi.nSites * 2;
+
+        while (voronoi.nSites < target && sim.spawn()) { }
+
+        if (!$animateToggle.prop('checked')) {
+
+          voronoi.render();
+        }
+      });
+
+      // site removal //
+
+      var $removeButton = $('#remove-button');
+      $removeButton.click(function() {
+
+        var target = voronoi.nSites / 2;
+
+        while (voronoi.nSites > target && sim.despawn()) { }
+
+        if (!$animateToggle.prop('checked')) {
+
+          voronoi.render();
+        }
+      });
+
+      // kickstart //
+
+      updateAnimation();
+    });
+  </script>
+</head>
+<body>
+  <div id="controls">
+
+    <button id="remove-button" type="button" class="btn btn-primary">
+      <span class="glyphicon glyphicon-minus"></span>
+    </button>
+
+    <button id="add-button" type="button" class="btn btn-primary">
+      <span class="glyphicon glyphicon-plus"></span>
+    </button>
+
+    <label>
+      <input id="animation-toggle"
+             type="checkbox" checked
+             data-toggle="toggle"
+             data-on="Animation On" data-off="Animation Off">
+    </label>
+
+    <label>
+      <input id="marker-toggle"
+             type="checkbox" checked
+             data-toggle="toggle"
+             data-on="Markers On" data-off="Markers Off">
+    </label>
+  </div>
+
+  <canvas id="demo-canvas"></canvas>
+</body>
+</html>

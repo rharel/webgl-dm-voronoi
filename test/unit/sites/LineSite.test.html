@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<!--
+/**
+ * @author Raoul Harel
+ * @license The MIT license (LICENSE.txt)
+ * @copyright 2015 Raoul Harel
+ * @url https://github.com/rharel/webgl-dm-voronoi
+ */
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Voronoi.LineSite unit test</title>
+
+  <link rel="stylesheet" href="../../../bower_components/qunit/qunit/qunit.css">
+
+  <script src="../../../bower_components/three.js/build/three.js"></script>
+
+  <script src="../../../src/sites/Site.js"></script>
+  <script src="../../../src/sites/LineSite.js"></script>
+
+  <script src="../../../bower_components/qunit/qunit/qunit.js"></script>
+  <script src="../../../node_modules/qunit-assert-close/qunit-assert-close.js">
+  </script>
+
+</head>
+<body>
+  <div id="qunit"></div>
+
+  <script>
+
+    var id, a, b, radius, geometry, material, line;
+
+    QUnit.module('line site', {
+
+      setup: function() {
+
+        id = 0;
+
+        a = {x: 1, y: 1};
+        b = {x: 4, y: 1};
+
+        radius = 2;
+
+        geometry = {
+          endpoint: new THREE.SphereGeometry(1),
+          edge: new THREE.SphereGeometry(1)
+        };
+
+        material = new THREE.MeshBasicMaterial();
+
+        line = new LineSite(0, a, b, radius, geometry, material);
+      }
+    });
+
+    QUnit.test('constructor', function(assert) {
+
+      // sanity //
+
+      assert.equal(line.id, id, 'ids match');
+      assert.equal(line.type, SiteType.line, 'site type is line');
+      assert.equal(line.color, material.color, 'colors match');
+
+      // verify mesh transform //
+
+      var equal = function(actual, expected, message) {
+        assert.equal(actual, expected, message);
+      };
+
+      var close = function(actual, expected, message) {
+        assert.close(actual, expected, 0.001, message);
+      };
+      
+      verifyPosition(equal, line.mesh.endpointA, 0, 0, 0, 'A');
+      verifyRotation(equal, line.mesh.endpointA, 0, 0, Math.PI, 'A');
+      verifyScale(equal, line.mesh.endpointA, 2, 2, 2, 'A');
+
+      verifyPosition(equal, line.mesh.endpointB, 0, 3, 0, 'B');
+      verifyRotation(equal, line.mesh.endpointB, 0, 0, 0, 'B');
+      verifyScale(equal, line.mesh.endpointB, 2, 2, 2, 'B');
+
+      verifyPosition(equal, line.mesh.edge, 0, 1.5, 0, 'Edge');
+      verifyRotation(equal, line.mesh.edge, 0, 0, 0, 'Edge');
+      verifyScale(equal, line.mesh.edge, 2, 3, 2, 'Edge');
+
+      verifyPosition(equal, line.origin, 1, 1, 0, 'Origin');
+      verifyRotation(close, line.origin, 0, 0, -Math.PI / 2, 'Origin');
+      verifyScale(equal, line.origin, 1, 1, 1, 'Origin');
+    });
+
+    QUnit.test('endpoint position getter/setter', function(assert) {
+
+      // verify initial values //
+
+      assert.equal(line.a.x, a.x);
+      assert.equal(line.a.y, a.y);
+
+      assert.equal(line.b.x, b.x);
+      assert.equal(line.b.y, b.y);
+
+      // modify and verify modifications //
+
+      line.a.x = b.x;
+      line.a.y = b.y;
+
+      line.b.x = a.x;
+      line.b.y = a.y;
+
+      assert.equal(line.a.x, b.x);
+      assert.equal(line.a.y, b.y);
+
+      assert.equal(line.b.x, a.x);
+      assert.equal(line.b.y, a.y);
+
+    });
+
+    QUnit.test('length and direction', function(assert) {
+
+      var len = line.length(), dir = line.direction();
+
+      assert.equal(len, 3, 'length');
+
+      assert.equal(dir.x, 1, 'direction.x');
+      assert.equal(dir.y, 0, 'direction.y');
+      assert.equal(dir.z, 0, 'direction.z');
+    });
+
+    function verifyVec3(property, assertEqual, obj, x, y, z, message) {
+
+      assertEqual(obj[property].x, x, message + '.' + property + '.x');
+      assertEqual(obj[property].y, y, message + '.' + property + '.y');
+      assertEqual(obj[property].z, z, message + '.' + property + '.z');
+    }
+
+    function verifyScale(assertEqual, obj, x, y, z, msg) {
+      return verifyVec3('scale', assertEqual, obj, x, y, z, msg);
+    }
+
+    function verifyRotation(assertEqual, obj, x, y, z, msg) {
+      return verifyVec3('rotation', assertEqual, obj, x, y, z, msg);
+    }
+
+    function verifyPosition(assertEqual, obj, x, y, z, msg) {
+      return verifyVec3('position', assertEqual, obj, x, y, z, msg);
+    }
+  </script>
+</body>
+</html>

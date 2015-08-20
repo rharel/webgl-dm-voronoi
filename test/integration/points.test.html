@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<!--
+/**
+ * @author Raoul Harel
+ * @license The MIT license (LICENSE.txt)
+ * @copyright 2015 Raoul Harel
+ * @url https://github.com/rharel/webgl-dm-voronoi
+ */
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <script src="../../bower_components/three.js/build/three.js"></script>
+
+  <script src="../../dist/voronoi.js"></script>
+
+  <title>webgl-dm-voronoi random points test</title>
+</head>
+<body>
+
+  <script>
+    var CANVAS_WIDTH = 500, CANVAS_HEIGHT = 500;
+    var N_POINTS = 10;
+
+    function randomInRange(a, b) { return a + Math.random() * (b - a); }
+
+    var randomColor = (function() {
+
+      function mix(a, b) {
+        return (a + b) / 2;
+      }
+
+      return function () {
+        return {
+          r: mix(Math.random(), 1),
+          g: mix(Math.random(), 1),
+          b: mix(Math.random(), 1)
+        };
+      };
+    })();
+
+    var RANDOM_POINTS = (function() {
+
+      var points = [];
+
+      for (var i = 0; i < N_POINTS; ++i) {
+
+        points.push({
+          x: randomInRange(0, CANVAS_WIDTH),
+          y: randomInRange(0, CANVAS_HEIGHT),
+          color: randomColor()
+        });
+      }
+
+      return points;
+    })();
+
+    function populate(voronoi) {
+
+      for (var i = 0; i < N_POINTS; ++i) {
+
+        var point = RANDOM_POINTS[i];
+
+        voronoi.point(point.x, point.y, point.color);
+      }
+    }
+  </script>
+
+  <h3>Random - Low precision (left) and high precision (right)</h3>
+
+  <div id="random-test-content">
+
+    <script>
+      (function() {
+
+        var voronoi = new Voronoi.Diagram({
+          width: CANVAS_WIDTH, height: CANVAS_HEIGHT,
+          precision: 8,
+          markers: true
+        });
+
+        populate(voronoi);
+
+        voronoi.markers.update();
+        voronoi.render();
+
+        document
+          .getElementById('random-test-content')
+          .appendChild(voronoi.canvas);
+
+      })();
+    </script>
+
+    <script>
+      (function() {
+
+        var voronoi = new Voronoi.Diagram({
+          width: CANVAS_WIDTH, height: CANVAS_HEIGHT,
+          precision: 32,
+          markers: true
+        });
+
+        populate(voronoi);
+
+        voronoi.markers.update();
+        voronoi.render();
+
+        document
+          .getElementById('random-test-content')
+          .appendChild(voronoi.canvas);
+
+      })();
+    </script>
+  </div>
+
+</body>
+</html>

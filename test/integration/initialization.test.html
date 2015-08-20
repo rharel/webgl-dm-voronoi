@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!--
+/**
+ * @author Raoul Harel
+ * @license The MIT license (LICENSE.txt)
+ * @copyright 2015 Raoul Harel
+ * @url https://github.com/rharel/webgl-dm-voronoi
+ */
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <script src="../../bower_components/three.js/build/three.js"></script>
+
+  <script src="../../dist/voronoi.js"></script>
+
+  <title>webgl-dm-voronoi initialization test</title>
+</head>
+<body>
+
+  <h3>New canvas (left) and existing canvas (right)</h3>
+
+  <div id="test-content">
+
+    <script>
+      (function() {
+
+        var w = 500;
+        var h = 500;
+        var voronoi = new Voronoi.Diagram({width: w, height: h});
+
+        var w4 = w / 4;
+        var h4 = h / 4;
+
+        voronoi.point(w4, h4, 'red');
+        voronoi.point(w4 * 2, h4 * 2, 'green');
+        voronoi.point(w4 * 3, h4 * 3, 'blue');
+
+        document
+          .getElementById('test-content')
+          .appendChild(voronoi.canvas);
+
+        voronoi.render();
+
+      })();
+    </script>
+
+    <canvas id="demo-canvas"
+            width="500" height="500"
+            style="width: 500px; height: 500px"></canvas>
+
+    <script>
+      (function() {
+
+        var canvas = document.getElementById('demo-canvas');
+        var voronoi = new Voronoi.Diagram({canvas: canvas});
+
+        var w = canvas.width;
+        var h = canvas.height;
+        var w4 = w / 4;
+        var h4 = h / 4;
+
+        voronoi.point(w4, h4, 'red');
+        voronoi.point(w4 * 2, h4 * 2, 'green');
+        voronoi.point(w4 * 3, h4 * 3, 'blue');
+
+        voronoi.render();
+
+      })();
+    </script>
+  </div>
+</body>
+</html>

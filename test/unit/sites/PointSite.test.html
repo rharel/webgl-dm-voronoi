@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<!--
+/**
+ * @author Raoul Harel
+ * @license The MIT license (LICENSE.txt)
+ * @copyright 2015 Raoul Harel
+ * @url https://github.com/rharel/webgl-dm-voronoi
+ */
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Voronoi.PointSite unit test</title>
+
+  <link rel="stylesheet" href="../../../bower_components/qunit/qunit/qunit.css">
+
+  <script src="../../../bower_components/three.js/build/three.js"></script>
+
+  <script src="../../../src/sites/Site.js"></script>
+  <script src="../../../src/sites/PointSite.js"></script>
+
+  <script src="../../../bower_components/qunit/qunit/qunit.js"></script>
+  <script src="../../../node_modules/qunit-assert-close/qunit-assert-close.js">
+  </script>
+
+</head>
+<body>
+  <div id="qunit"></div>
+
+  <script>
+
+    QUnit.test('constructor', function(assert) {
+
+      var id = 0;
+      var x = 0, y = 1;
+      var radius = 2;
+
+      var geometry = new THREE.SphereGeometry(1);
+      var material = new THREE.MeshBasicMaterial();
+
+      var point = new PointSite(id, x, y, radius, geometry, material);
+
+      assert.equal(point.id, id, 'ids match');
+      assert.equal(point.type, SiteType.point, 'site type is point');
+      assert.equal(point.color, material.color, 'colors match');
+
+      verifyTransform(assert, point, x, y, radius);
+    });
+
+    QUnit.test('position getter/setter', function(assert) {
+
+      var geometry = new THREE.SphereGeometry(1);
+      var material = new THREE.MeshBasicMaterial();
+
+      var point = new PointSite(0, 0, 1, 4, geometry, material);
+
+      // modify and verify modifications //
+
+      point.x = 2;
+      point.y = 3;
+
+      verifyTransform(assert, point, 2, 3, 4);
+    });
+
+
+    function verifyTransform(assert, p, x, y, r) {
+
+      assert.equal(p.origin.scale.x, r);
+      assert.equal(p.origin.scale.y, r);
+      assert.equal(p.origin.scale.z, r);
+
+      assert.equal(p.x, x);
+      assert.equal(p.y, y);
+
+      assert.equal(p.origin.position.x, x);
+      assert.equal(p.origin.position.y, y);
+      assert.equal(p.origin.position.z, 0);
+    }
+
+  </script>
+</body>
+</html>
