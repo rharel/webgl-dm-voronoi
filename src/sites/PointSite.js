@@ -5,6 +5,18 @@
  * @url https://github.com/rharel/webgl-dm-voronoi
  */
 
+/**
+ * Describes a point voronoi site.
+ *
+ * @param id Site ID (supplied by Diagram)
+ * @param x
+ * @param y
+ * @param radius Size of the distance mesh
+ * @param geometry Point distance mesh geometry (shared among all point sites)
+ * @param material three.js material
+ *
+ * @constructor
+ */
 function PointSite(id, x, y, radius, geometry, material) {
 
   Site.call(this, id, SiteType.point, material.color);
@@ -35,10 +47,17 @@ PointSite.prototype = Object.create(Site.prototype, {
     set: function y(value) { this._mesh.position.y = value; }
   },
 
+  /**
+   * Gets the 3d object hosting this site's meshes.
+   */
   origin: {
     get: function origin() { return this._mesh; }
   },
 
+  /**
+   * Gets/sets the distance mesh size. Setting this is the responsibility
+   * of Diagram.
+   */
   radius: {
     get: function radius() { return this._mesh.scale.x; },
 

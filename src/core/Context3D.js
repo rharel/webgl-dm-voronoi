@@ -5,6 +5,12 @@
  * @url https://github.com/rharel/webgl-dm-voronoi
  */
 
+/**
+ * The 3D context holds the webgl interface (with the help of three.js) and
+ * exposes only the most general interface to the Diagram component.
+ *
+ * @constructor
+ */
 function Context3D(canvas) {
 
   this._canvas = canvas;
@@ -34,6 +40,10 @@ Context3D.prototype = {
 
   render: function() { this._renderer.render(this._scene, this._camera); },
 
+  /**
+   * Call this when the drawing canvas changes size. It reconfigures the
+   * rendering viewport as well as the camera projection matrix.
+   */
   resize: function() {
 
     this._renderer.setSize(
@@ -47,6 +57,11 @@ Context3D.prototype = {
     this._camera.updateProjectionMatrix();
   },
 
+  /**
+   * In case that for some reason the user uses identical colors for multiple
+   * sites, we cache those here, or retrieved already cached versions if they
+   * exist.
+   */
   material: function(color) {
 
     var key = color.getStyle();

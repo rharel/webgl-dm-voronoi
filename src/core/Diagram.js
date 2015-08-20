@@ -5,6 +5,32 @@
  * @url https://github.com/rharel/webgl-dm-voronoi
  */
 
+/**
+ * The main class of the library. Responsible for initializing a drawing canvas
+ * (from scratch or from an existing one) and exposes an interface for creating
+ * voronoi sites.
+ *
+ * Currently we support the following sites: point, and line (segment).
+ *
+ * @param options
+ *  An object with the following optional properties:
+ *    canvas:
+ *      If present, will render into this element. Otherwise, will create
+ *      a new canvas. The library user needs to add it to the DOM him/herself.
+ *
+ *    width, height:
+ *      Desired size of the canvas, ignored if the canvas option is available.
+ *
+ *    precision:
+ *      Positive integer which controls diagram refinement. The higher, the more
+ *      detailed will the distance-meshes be, and thus the more correct
+ *      the rendering becomes.
+ *
+ *    markers:
+ *      Boolean. Indicates whether the site markers are initially visible.
+ *
+ * @constructor
+ */
 function Diagram(options) {
 
   options = _parseOptions(options);
@@ -85,6 +111,14 @@ Diagram.prototype = {
     }
   },
 
+  /**
+   * Creates a new point site.
+
+   * @returns {PointSite}
+   *  The object returned is a reference to the created site.
+   *  Changing the reference properties will have immediate effect on the
+   *  diagram.
+   */
   point: function(x, y, color) {
 
     color = this._parseColor(color);
@@ -102,6 +136,19 @@ Diagram.prototype = {
     return site;
   },
 
+  /**
+   * Creates a new line site.
+   *
+   * @param a Object with {x: y:}
+   * @param b Object with {x: y:}
+   * @param color
+   *  Either a css style string, or an object with {r:[0-1] g:[0-1] b:[0-1]}.
+   *
+   * @returns {LineSite}
+   *  The object returned is a reference to the created site.
+   *  Changing the reference properties will have immediate effect on the
+   *  diagram.
+   */
   line: function(a, b, color) {
 
     color = this._parseColor(color);
@@ -129,6 +176,14 @@ Diagram.prototype = {
     this._markerLayer.add(site);
   },
 
+  /**
+   * Removes a site from the diagram.
+   *
+   * @param id_or_site
+   *  Either the site.id or the site object itself.
+   *
+   * @returns {boolean} True if the site was removed.
+   */
   remove: function(id_or_site) {
 
     var id = (typeof id_or_site === 'number') ? id_or_site : id_or_site.id;
@@ -149,8 +204,16 @@ Diagram.prototype = {
     else { return false; }
   },
 
+  /**
+   * Renders the diagram onto the canvas.
+   */
   render: function() { this._3d.render(); },
 
+  /**
+   * Resizes the diagram.
+   *
+   * Call this when the canvas' dimensions have changed.
+   */
   resize: function() {
 
     this._maxDistance = Math.max(this._canvas.width, this._canvas.height);
@@ -162,11 +225,27 @@ Diagram.prototype = {
     }
   },
 
+  /**
+   * Gets the canvas tied to this.
+   */
   get canvas() { return this._canvas; },
 
+  /**
+   * Gets the precision of this.
+   */
   get precision() { return this._precision; },
 
+  /**
+   * Gets the number of sites (of all types together).
+   *
+   * @returns {number}
+   */
   get nSites() { return this._nSites; },
 
+  /**
+   * Gets the marker layer object of this.
+   *
+   * @returns {MarkerLayer}
+   */
   get markers() { return this._markerLayer; }
 };

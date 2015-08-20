@@ -5,6 +5,12 @@
  * @url https://github.com/rharel/webgl-dm-voronoi
  */
 
+/**
+ * The marker layer is responsible for drawing meshes that visualize site-
+ * locations. We call this visualization-meshes markers for short.
+ *
+ * @constructor
+ */
 function MarkerLayer() {
 
   this._sites = {};  // (id -> site) map
@@ -78,6 +84,11 @@ MarkerLayer.prototype = {
     delete this._sites[site.id];
   },
 
+  /**
+   * Updates the marker-mesh's location based on its site location.
+   *
+   * Call this if a site's position was changed.
+   */
   update: function() {
 
     for (var id in this._sites) {
@@ -117,5 +128,10 @@ MarkerLayer.prototype = {
   get visible() { return this._origin.visible; },
   set visible(value) { this._origin.visible = !!value; },
 
+  /**
+   * Gets the 3d object hosting all of the markers.
+   *
+   * @returns {THREE.Object3D|*}
+   */
   get origin() { return this._origin; }
 };

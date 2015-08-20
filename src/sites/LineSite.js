@@ -5,6 +5,18 @@
  * @url https://github.com/rharel/webgl-dm-voronoi
  */
 
+/**
+ * Describes a line segment voronoi site.
+ *
+ * @param id Site ID (supplied by Diagram)
+ * @param a Object with {x: y:}
+ * @param b Object with {x: y:}
+ * @param radius Size of the distance mesh
+ * @param geometry Object with {endpoint: edge:} (shared among all line sites)
+ * @param material three.js material
+ *
+ * @constructor
+ */
 function LineSite(id, a, b, radius, geometry, material) {
 
   Site.call(this, id, SiteType.line, material.color);
@@ -129,6 +141,16 @@ LineSite.prototype = Object.create(Site.prototype, {
     }
   },
 
+  /**
+   * Gets endpoint A controller.
+   * You can use it to change the position of the endpoint.
+   *
+   * @returns Object with {x: y: set(x, y):}
+   * @example
+   *  var line = new LineSite(...);
+   *  line.a.x = 1;  // set individual coordinate
+   *  line.set(1, 2);  // set both x and y together
+   */
   a: {
     get: function a() { return this._aProxy; }
   },
@@ -137,6 +159,9 @@ LineSite.prototype = Object.create(Site.prototype, {
     get: function b() { return this._bProxy; }
   },
 
+  /**
+   * Computes line segment length.
+   */
   length: {
     value: function() {
 
@@ -148,6 +173,9 @@ LineSite.prototype = Object.create(Site.prototype, {
     }
   },
 
+  /**
+   * Computes normalized line vector (from endpoint A to B).
+   */
   direction: {
     value: function() {
 
@@ -163,10 +191,17 @@ LineSite.prototype = Object.create(Site.prototype, {
     get: function mesh() { return this._mesh; }
   },
 
+  /**
+   * Gets the 3d object hosting this site's meshes.
+   */
   origin: {
     get: function origin() { return this._origin; }
   },
 
+  /**
+   * Gets/sets the distance mesh size. Setting this is the responsibility
+   * of Diagram.
+   */
   radius: {
     get: function radius() { return this._mesh.endpointA.scale.x; },
     set: function radius(value) {

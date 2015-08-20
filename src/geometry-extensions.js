@@ -7,6 +7,22 @@
 
 var GeometryExtensions = {
 
+  /**
+   * Generate a triangle fan geometry.
+   *
+   * @param radius
+   * @param depth
+   * @param angle
+   * @param nRadialSegments
+   *
+   * @returns {THREE.Geometry}
+   *
+   * @details
+   *  The triangle fan is a portion of a cone, with central source vertex
+   *  at the origin, and base vertices at z = -depth
+   *  The base vertices form an arc of the given angle, and their frequency
+   *  along the arc is determined by the nRadialSegments parameter.
+   */
   triangleFan: function(radius, depth, angle, nRadialSegments) {
 
     var geometry = new THREE.Geometry();
