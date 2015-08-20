@@ -25,6 +25,12 @@ var voronoi = new Voronoi.Diagram(options);
 | precision | 16 | Positive integer which controls the level of detail of the distance mesh. The higher, the more detailed will the mesh be, producing a better rendering at the cost of performance.
 | markers | true | Boolean indicating whether site markers are initially visible.
 
+If you use an existing canvas, just pass its DOM element in the `canvas` option. Otherwise, you will need to append the canvas the voronoi diagram created yourself:
+
+```javascript
+document.appendChild(voronoi.canvas);
+```
+
 ## Populate
 
 Currently, we support two voronoi site types: points and line segments.
