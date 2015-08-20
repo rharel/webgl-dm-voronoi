@@ -46,11 +46,11 @@ Simulation.prototype = {
     );
 
     var velocity = {
-      x: Random.inRange(
+      x: Random.sign() * Random.inRange(
         this._velocityBounds.min,
         this._velocityBounds.max
       ),
-      y: Random.inRange(
+      y: Random.sign() * Random.inRange(
         this._velocityBounds.min,
         this._velocityBounds.max
       )

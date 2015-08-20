@@ -7,6 +7,11 @@
 
 var Random = {
 
+  sign: function() {
+
+    return Math.random() <= 0.5 ? -1 : 1;
+  },
+
   inRange: function (a, b) {
     return a + Math.random() * (b - a);
   },
