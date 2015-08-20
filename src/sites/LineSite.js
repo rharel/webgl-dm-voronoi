@@ -165,6 +165,18 @@ LineSite.prototype = Object.create(Site.prototype, {
 
   origin: {
     get: function origin() { return this._origin; }
+  },
+
+  radius: {
+    get: function radius() { return this._mesh.endpointA.scale.x; },
+    set: function radius(value) {
+
+      this._mesh.endpointA.scale.set(+value, +value, +value);
+      this._mesh.endpointB.scale.set(+value, +value, +value);
+
+      this._mesh.edge.scale.setX(+value);
+      this._mesh.edge.scale.setZ(+value);
+    }
   }
 });
 

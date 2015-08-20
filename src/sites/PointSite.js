@@ -37,6 +37,15 @@ PointSite.prototype = Object.create(Site.prototype, {
 
   origin: {
     get: function origin() { return this._mesh; }
+  },
+
+  radius: {
+    get: function radius() { return this._mesh.scale.x; },
+
+    set: function radius(value) {
+
+      this._mesh.scale.set(+value, +value, +value);
+    }
   }
 });
 
