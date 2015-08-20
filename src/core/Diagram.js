@@ -20,8 +20,9 @@ function Diagram(options) {
 
   this._precision = options.precision;
 
-  this._sites = [];
+  this._sites = {};
   this._id = 0;
+  this._nSites = 0;
 
   this._maxDistance = Math.max(this._canvas.width, this._canvas.height);
 
@@ -96,10 +97,7 @@ Diagram.prototype = {
       this._3d.material(color)
     );
 
-    this._sites.push(site);
-    this._3d.add(site.origin);
-
-    this._markerLayer.add(site);
+    this._add(site);
 
     return site;
   },
@@ -116,21 +114,59 @@ Diagram.prototype = {
       this._3d.material(color)
     );
 
-    this._sites.push(site);
-    this._3d.add(site.origin);
-
-    this._markerLayer.add(site);
+    this._add(site);
 
     return site;
   },
 
+  _add: function(site) {
+
+    this._sites[site.id] = site;
+    this._nSites++;
+
+    this._3d.add(site.origin);
+
+    this._markerLayer.add(site);
+  },
+
+  remove: function(id_or_site) {
+
+    var id = (typeof id_or_site === 'number') ? id_or_site : id_or_site.id;
+
+    if (this._sites.hasOwnProperty(id)) {
+
+      var site = this._sites[id];
+
+      this._markerLayer.remove(site);
+
+      this._3d.remove(site.origin);
+
+      delete this._sites[id];
+      this._nSites--;
+
+      return true;
+    }
+    else { return false; }
+  },
+
   render: function() { this._3d.render(); },
+
+  resize: function() {
+
+    this._maxDistance = Math.max(this._canvas.width, this._canvas.height);
+
+    this._3d.resize();
+
+    for (var id in this._sites) {
+      this._sites[id].radius = this._maxDistance;
+    }
+  },
 
   get canvas() { return this._canvas; },
 
   get precision() { return this._precision; },
 
-  get nSites() { return this._sites.length; },
+  get nSites() { return this._nSites; },
 
   get markers() { return this._markerLayer; }
 };
