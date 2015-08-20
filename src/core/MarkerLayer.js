@@ -7,8 +7,9 @@
 
 function MarkerLayer() {
 
-  this._sites = {};
-  this._markers = {};
+  this._sites = {};  // (id -> site) map
+  this._markers = {};  // (id -> marker) map
+
   this._origin = new THREE.Object3D();
 
   this._markerGeometry = new THREE.PlaneGeometry(1, 1);
@@ -30,7 +31,7 @@ MarkerLayer.prototype = {
 
   add: function(site) {
 
-    if (!!this._markers[site.id]) { return; }
+    if (this._sites.hasOwnProperty(site.id)) { return; }
 
     var marker = new THREE.Mesh(
       this._markerGeometry,
@@ -69,12 +70,12 @@ MarkerLayer.prototype = {
 
   remove: function(site) {
 
-    if (!this._markers[site.id]) { return; }
+    if (!this._sites.hasOwnProperty(site.id)) { return; }
 
     var marker = this._markers[site.id];
     this._origin.remove(marker);
-    this._markers[site.id] = null;
-    this._sites[site.id] = null;
+    delete this._markers[site.id];
+    delete this._sites[site.id];
   },
 
   update: function() {
