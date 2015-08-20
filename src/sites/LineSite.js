@@ -5,9 +5,9 @@
  * @url https://github.com/rharel/webgl-dm-voronoi
  */
 
-function LineSite(a, b, radius, geometry, material) {
+function LineSite(id, a, b, radius, geometry, material) {
 
-  Site.call(this, SiteType.line, material.color);
+  Site.call(this, id, SiteType.line, material.color);
 
   this._a = new THREE.Vector3(a.x, a.y, 0);
   this._b = new THREE.Vector3(b.x, b.y, 0);
@@ -130,27 +130,41 @@ LineSite.prototype = Object.create(Site.prototype, {
   },
 
   a: {
-    get: function a() {
-      return this._aProxy;
-    }
+    get: function a() { return this._aProxy; }
   },
 
   b: {
-    get: function b() {
-      return this._bProxy;
+    get: function b() { return this._bProxy; }
+  },
+
+  length: {
+    value: function() {
+
+      return (
+        new THREE.Vector3()
+          .subVectors(this._b, this._a)
+          .length()
+      );
+    }
+  },
+
+  direction: {
+    value: function() {
+
+      return (
+        new THREE.Vector3()
+          .subVectors(this._b, this._a)
+          .normalize()
+      );
     }
   },
 
   mesh: {
-    get: function mesh() {
-      return this._mesh;
-    }
+    get: function mesh() { return this._mesh; }
   },
 
   origin: {
-    get: function origin() {
-      return this._origin;
-    }
+    get: function origin() { return this._origin; }
   }
 });
 

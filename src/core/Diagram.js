@@ -28,7 +28,7 @@ function Diagram(options) {
   this._pointDistanceGeometry = PointSite.distanceGeometry(this._precision);
 
   this._lineDistancGeometry = {
-    edge: LineSite.edgeDistanceGeometry(this._precision),
+    edge: LineSite.edgeDistanceGeometry(),
     endpoint: LineSite.endpointDistanceGeometry(this._precision)
   };
 
@@ -109,6 +109,7 @@ Diagram.prototype = {
     color = this._parseColor(color);
 
     var site = new LineSite(
+      this._id++,
       a, b,
       this._maxDistance,
       this._lineDistancGeometry,
@@ -117,6 +118,8 @@ Diagram.prototype = {
 
     this._sites.push(site);
     this._3d.add(site.origin);
+
+    this._markerLayer.add(site);
 
     return site;
   },

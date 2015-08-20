@@ -29,25 +29,37 @@
 
   <script>
 
+    var id, a, b, radius, geometry, material, line;
+
+    QUnit.module('line site', {
+
+      setup: function() {
+
+        id = 0;
+
+        a = {x: 1, y: 1};
+        b = {x: 4, y: 1};
+
+        radius = 2;
+
+        geometry = {
+          endpoint: new THREE.SphereGeometry(1),
+          edge: new THREE.SphereGeometry(1)
+        };
+
+        material = new THREE.MeshBasicMaterial();
+
+        line = new LineSite(0, a, b, radius, geometry, material);
+      }
+    });
+
     QUnit.test('constructor', function(assert) {
-
-      var a = {x: 1, y: 1};
-      var b = {x: 4, y: 1};
-
-      var radius = 2;
-
-      var geometry = {
-        endpoint: new THREE.SphereGeometry(1),
-        edge: new THREE.SphereGeometry(1)
-      };
-
-      var material = new THREE.MeshBasicMaterial();
-
-      var line = new LineSite(a, b, radius, geometry, material);
 
       // sanity //
 
+      assert.equal(line.id, id, 'ids match');
       assert.equal(line.type, SiteType.line, 'site type is line');
+      assert.equal(line.color, material.color, 'colors match');
 
       // verify mesh transform //
 
@@ -78,21 +90,6 @@
 
     QUnit.test('endpoint position getter/setter', function(assert) {
 
-      var a = {x: 1, y: 1};
-      var b = {x: 4, y: 1};
-
-      var radius = 2;
-
-      var geometry = {
-        endpoint: new THREE.SphereGeometry(1),
-        edge: new THREE.SphereGeometry(1)
-      };
-
-      var material = new THREE.MeshBasicMaterial();
-
-      var line = new LineSite(a, b, radius, geometry, material);
-
-
       // verify initial values //
 
       assert.equal(line.a.x, a.x);
@@ -117,6 +114,16 @@
 
     });
 
+    QUnit.test('length and direction', function(assert) {
+
+      var len = line.length(), dir = line.direction();
+
+      assert.equal(len, 3, 'length');
+
+      assert.equal(dir.x, 1, 'direction.x');
+      assert.equal(dir.y, 0, 'direction.y');
+      assert.equal(dir.z, 0, 'direction.z');
+    });
 
     function verifyVec3(property, assertEqual, obj, x, y, z, message) {
 

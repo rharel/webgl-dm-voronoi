@@ -32,16 +32,25 @@ MarkerLayer.prototype = {
 
     if (!!this._markers[site.id]) { return; }
 
-    var marker;
+    var marker = new THREE.Mesh(
+      this._markerGeometry,
+      this._markerMaterial
+    );
 
     switch (site.type) {
 
-      default: {  // point
+      case (SiteType.line): {
 
-        marker = new THREE.Mesh(
-          this._markerGeometry,
-          this._markerMaterial
+        marker.scale.set(
+          MarkerLayer.style.size,
+          site.length(),
+          1
         );
+
+        break;
+      }
+
+      default: {  // point
 
         marker.scale.set(
           MarkerLayer.style.size,
@@ -76,6 +85,25 @@ MarkerLayer.prototype = {
       var site = this._sites[id];
 
       switch (site.type) {
+
+        case (SiteType.line): {
+
+          marker.rotation.setFromQuaternion(
+            new THREE.Quaternion().setFromUnitVectors(
+              new THREE.Vector3(0, 1, 0),
+              site.direction()
+            )
+          );
+
+          var center = {
+            x: (site.a.x + site.b.x) / 2,
+            y: (site.a.y + site.b.y) / 2
+          };
+
+          marker.position.set(center.x, center.y, 0);
+
+          break;
+        }
 
         default: {  // point
 
