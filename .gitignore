@@ -1,6 +1,34 @@
 # IDE
-.idea
+.idea/
 
 # pakage managers
-node_modules
-bower_components
+node_modules/
+
+# dont ignore vendor libs
+
+bower_components/*
+
+# bootstrap
+
+!bower_components/bootstrap/
+
+bower_components/bootstrap/*
+!bower_components/bootstrap/dist/
+
+# bootstrap toggle
+
+!bower_components/bootstrap-toggle/
+
+# jquery
+
+!bower_components/jquery/
+
+bower_components/jquery/*
+!bower_components/jquery/dist/
+
+# three.js
+
+!bower_components/three.js/
+
+bower_components/three.js/*
+!bower_components/three.js/build/
