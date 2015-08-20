@@ -94,10 +94,6 @@ Simulation.prototype = {
 
     if (this._renderPending) {
 
-      if (this._voronoi.markers.visible) {
-        this._voronoi.markers.update();
-      }
-
       this._voronoi.render();
       this._renderPending = false;
     }
