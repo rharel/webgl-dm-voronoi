@@ -40,22 +40,36 @@
       };
     })();
 
+    var RANDOM_POINTS = (function() {
+
+      var points = [];
+
+      for (var i = 0; i < N_POINTS; ++i) {
+
+        points.push({
+          x: randomInRange(0, CANVAS_WIDTH),
+          y: randomInRange(0, CANVAS_HEIGHT),
+          color: randomColor()
+        });
+      }
+
+      return points;
+    })();
+
     function populate(voronoi) {
 
       for (var i = 0; i < N_POINTS; ++i) {
 
-        voronoi.point(
-          randomInRange(0, CANVAS_WIDTH),
-          randomInRange(0, CANVAS_HEIGHT),
-          randomColor()
-        );
+        var point = RANDOM_POINTS[i];
+
+        voronoi.point(point.x, point.y, point.color);
       }
     }
   </script>
 
-  <h3>Low precision (left) and high precision (right)</h3>
+  <h3>Random - Low precision (left) and high precision (right)</h3>
 
-  <div id="test-content">
+  <div id="random-test-content">
 
     <script>
       (function() {
@@ -72,7 +86,7 @@
         voronoi.render();
 
         document
-          .getElementById('test-content')
+          .getElementById('random-test-content')
           .appendChild(voronoi.canvas);
 
       })();
@@ -93,7 +107,7 @@
         voronoi.render();
 
         document
-          .getElementById('test-content')
+          .getElementById('random-test-content')
           .appendChild(voronoi.canvas);
 
       })();

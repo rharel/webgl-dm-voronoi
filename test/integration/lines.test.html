@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<!--
+/**
+ * @author Raoul Harel
+ * @license The MIT license (LICENSE.txt)
+ * @copyright 2015 Raoul Harel
+ * @url https://github.com/rharel/webgl-dm-voronoi
+ */
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <script src="../../bower_components/three.js/build/three.js"></script>
+
+  <script src="../../dist/voronoi.js"></script>
+
+  <title>webgl-dm-voronoi random lines test</title>
+</head>
+<body>
+
+  <script>
+    var CANVAS_WIDTH = 500, CANVAS_HEIGHT = 500;
+    var N_LINES = 5;
+
+    function randomInRange(a, b) { return a + Math.random() * (b - a); }
+
+    var randomColor = (function() {
+
+      function mix(a, b) {
+        return (a + b) / 2;
+      }
+
+      return function () {
+        return {
+          r: mix(Math.random(), 1),
+          g: mix(Math.random(), 1),
+          b: mix(Math.random(), 1)
+        };
+      };
+    })();
+
+    function randomPosition() {
+
+      return {
+        x: randomInRange(0, CANVAS_WIDTH),
+        y: randomInRange(0, CANVAS_HEIGHT)
+      };
+    }
+
+    var RANDOM_LINES = (function() {
+
+      var lines = [];
+
+      for (var i = 0; i < N_LINES; ++i) {
+
+        lines.push({
+          a: randomPosition(),
+          b: randomPosition(),
+          color: randomColor()
+        });
+      }
+
+      return lines;
+    })();
+
+    function populate(voronoi) {
+
+      for (var i = 0; i < N_LINES; ++i) {
+
+        var line = RANDOM_LINES[i];
+
+        voronoi.line(line.a, line.b, line.color);
+      }
+    }
+  </script>
+
+  <h3>Static - Low precision (left) and high precision (right)</h3>
+
+  <div id="static-test-content">
+    <script>
+      (function() {
+
+        var voronoi = new Voronoi.Diagram({
+          width: CANVAS_WIDTH, height: CANVAS_HEIGHT,
+          precision: 4,
+          markers: true
+        });
+
+        voronoi.line({x: 125, y: 50}, {x: 375, y: 50}, 'red');
+        voronoi.line({x: 125, y: 450}, {x: 375, y: 450}, 'blue');
+
+        voronoi.line({x: 250, y: 125}, {x: 250, y: 375}, 'green');
+        voronoi.line({x: 125, y: 250}, {x: 375, y: 250}, 'magenta');
+
+        voronoi.markers.update();
+        voronoi.render();
+
+        document
+          .getElementById('static-test-content')
+          .appendChild(voronoi.canvas);
+
+      })();
+    </script>
+
+    <script>
+      (function() {
+
+        var voronoi = new Voronoi.Diagram({
+          width: CANVAS_WIDTH, height: CANVAS_HEIGHT,
+          precision: 32,
+          markers: true
+        });
+
+        voronoi.line({x: 125, y: 50}, {x: 375, y: 50}, 'red');
+        voronoi.line({x: 125, y: 450}, {x: 375, y: 450}, 'blue');
+
+        voronoi.line({x: 250, y: 125}, {x: 250, y: 375}, 'green');
+        voronoi.line({x: 125, y: 250}, {x: 375, y: 250}, 'magenta');
+
+        voronoi.markers.update();
+        voronoi.render();
+
+        document
+          .getElementById('static-test-content')
+          .appendChild(voronoi.canvas);
+
+      })();
+    </script>
+  </div>
+
+  <h3>Random - Low precision (left) and high precision (right)</h3>
+
+  <div id="random-test-content">
+
+    <script>
+      (function() {
+
+        var voronoi = new Voronoi.Diagram({
+          width: CANVAS_WIDTH, height: CANVAS_HEIGHT,
+          precision: 4,
+          markers: true
+        });
+
+        populate(voronoi);
+
+        voronoi.markers.update();
+        voronoi.render();
+
+        document
+          .getElementById('random-test-content')
+          .appendChild(voronoi.canvas);
+
+      })();
+    </script>
+
+    <script>
+      (function() {
+
+        var voronoi = new Voronoi.Diagram({
+          width: CANVAS_WIDTH, height: CANVAS_HEIGHT,
+          precision: 32,
+          markers: true
+        });
+
+        populate(voronoi);
+
+        voronoi.markers.update();
+        voronoi.render();
+
+        document
+          .getElementById('random-test-content')
+          .appendChild(voronoi.canvas);
+
+      })();
+    </script>
+  </div>
+
+</body>
+</html>
