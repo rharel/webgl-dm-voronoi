@@ -22,9 +22,12 @@
   ],
   "devDependencies": {
     "jquery": "~2.1.4",
-    "qunit": "~1.18.0"
+    "qunit": "~1.18.0",
+    "bootstrap": "~3.3.5",
+    "bootstrap-toggle": "~2.2.1"
   },
   "dependencies": {
     "three.js": "mrdoob/three.js"
-  }
+  },
+  "main": "./dist/voronoi.min.js"
 }
