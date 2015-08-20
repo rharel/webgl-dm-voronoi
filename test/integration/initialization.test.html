@@ -19,8 +19,9 @@
 </head>
 <body>
 
-  <div id="new-canvas-test">
-    <h3>New Canvas</h3>
+  <h3>New canvas (left) and existing canvas (right)</h3>
+
+  <div id="test-content">
 
     <script>
       (function() {
@@ -37,17 +38,13 @@
         voronoi.point(w4 * 3, h4 * 3, 'blue');
 
         document
-          .getElementById('new-canvas-test')
+          .getElementById('test-content')
           .appendChild(voronoi.canvas);
 
         voronoi.render();
 
       })();
     </script>
-  </div>
-
-  <div id="existing-canvas-test">
-    <h3>Existing canvas</h3>
 
     <canvas id="demo-canvas"
             width="500" height="500"
@@ -73,6 +70,5 @@
       })();
     </script>
   </div>
-
 </body>
 </html>
