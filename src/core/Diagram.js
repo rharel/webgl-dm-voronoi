@@ -207,7 +207,11 @@ Diagram.prototype = {
   /**
    * Renders the diagram onto the canvas.
    */
-  render: function() { this._3d.render(); },
+  render: function() {
+
+    if (this._markerLayer.visible) { this._markerLayer.update(); }
+    this._3d.render();
+  },
 
   /**
    * Resizes the diagram.

@@ -48,7 +48,7 @@
 
       var sim = new Simulation(
         voronoi,
-        {min: 2, max: 128},  // point limits
+        {min: 4, max: 128},  // point limits
         {min: 20, max: 40},  // velocity limits
         30  // refresh interval (ms)
       );
@@ -91,8 +91,6 @@
 
         voronoi.markers.visible = $markerToggle.prop('checked');
 
-        if (voronoi.markers.visible) { voronoi.markers.update(); }
-
         voronoi.render();
       }
 
@@ -109,7 +107,6 @@
 
         if (!$animateToggle.prop('checked')) {
 
-          voronoi.markers.update();
           voronoi.render();
         }
       });
@@ -125,7 +122,6 @@
 
         if (!$animateToggle.prop('checked')) {
 
-          voronoi.markers.update();
           voronoi.render();
         }
       });
