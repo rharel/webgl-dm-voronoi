@@ -1,6 +1,6 @@
 {
   "name": "webgl-dm-voronoi",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Voronoi diagrams on the GPU using distance-meshes.",
   "repository": {
     "type": "git",
