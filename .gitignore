@@ -1,8 +1,14 @@
 # Editor
-.idea
+.idea/
 
 # Bower
-bower_components
+bower_components/*
 
 # Node
-node_modules
+node_modules/
+
+# Three.js
+!bower_components/three.js
+
+bower_components/three.js/*
+!bower_components/three.js/build
