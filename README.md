@@ -65,7 +65,7 @@ p.y = ...  // new y;
 
 Instantiate a line segment like so:
 ```javascript
-var w = voronoi.line(a = {x:, y:}, b = {x:, y:}, color)
+var line = voronoi.line(a = {x:, y:}, b = {x:, y:}, color)
 ```
 
 You may change the position of the endpoints:
@@ -110,7 +110,7 @@ voronoi.markers.visible = true;
 
 # Demo
 
-Under [test/integration](test/integration) you can view some basic usage cases. A more complex demo can be seen live [here].(http://rharel.github.io/webgl-dm-voronoi/)
+Under [test/integration](test/integration) you can view some basic usage cases. A more complex demo can be seen live [here](http://rharel.github.io/webgl-dm-voronoi/).
 
 # License
 
