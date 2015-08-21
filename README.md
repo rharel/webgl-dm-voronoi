@@ -1,9 +1,16 @@
+[![Bower version](https://badge.fury.io/bo/webgl-dm-voronoi.svg)](http://badge.fury.io/bo/webgl-dm-voronoi)
 [![Build Status](https://travis-ci.org/rharel/webgl-dm-voronoi.svg)](https://travis-ci.org/rharel/webgl-dm-voronoi)
 [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com)
 
+# What is this?
+
+A live demo is worth a thousand words, so [here it is](http://rharel.github.io/webgl-dm-voronoi/). This is a voronoi diagram plotting library that takes advantage of the GPU pipeline in order to convert meshes into voronoi diagrams. A paper explaining the method used can be viewed [here](https://files.ifi.uzh.ch/vmml/SummerSeminars2010/PaperWriting/papers/p277-hoff.pdf).
+
+Currently, we support point and line-segment voronoi sites. In the future we intend to add on line-strips, polygons and general curves.
+
 # Installation
 
-Install via bower: `bower install rharel/webgl-dm-voronoi`
+Install via bower: `bower install webgl-dm-voronoi`
 
 The `dist/` directory contains both a normal (`voronoi.js`) as well as a minified version of the library (`voronoi.min.js`).
 Include in the browser using `<script src="path/to/voronoi.min.js"></script>`
@@ -25,7 +32,7 @@ var voronoi = new Voronoi.Diagram(options);
 | precision | 16 | Positive integer which controls the level of detail of the distance mesh. The higher, the more detailed will the mesh be, producing a better rendering at the cost of performance.
 | markers | true | Boolean indicating whether site markers are initially visible.
 
-If you use an existing canvas, just pass its DOM element in the `canvas` option. Otherwise, you will need to append the canvas the voronoi diagram created yourself:
+If you use an existing canvas, just pass its DOM element in the `canvas` option. Otherwise, you will need to add the canvas the voronoi diagram created to the DOM yourself:
 
 ```javascript
 document.appendChild(voronoi.canvas);
@@ -39,6 +46,8 @@ Something that is common to all site instantiation methods is that the returned 
 
 Each instantiation method will also take a `color` parameter, this will be the color of the rendered voronoi cell of the created site. The value passed can be either a css color string or an object `{r:, g:, b:}` with channel values in the interval [0, 1].
 
+Every site gives you read access to its unique id via `site.id` (integer), its associated color `site.color` (`{r:, g:, b:}`) and its type `site.type` (`SiteType.point` or `SiteType.line`). 
+
 ### Points
 
 Instantiate points like so:
@@ -48,8 +57,8 @@ var p = voronoi.point(x, y, color);
 
 You may change the position of a point site:
 ```javascript
-p.x = newX;
-p.y = newY;
+p.x = ...  // new x;
+p.y = ...  // new y;
 ```
 
 ### Line segments
@@ -59,7 +68,7 @@ Instantiate a line segment like so:
 var w = voronoi.line(a = {x:, y:}, b = {x:, y:}, color)
 ```
 
-You may hange the position of the endpoints of a line site:
+You may change the position of the endpoints:
 ```javascript
 // Individual axis
 line.a.x = ... // new x for endpoint A
@@ -101,7 +110,7 @@ voronoi.markers.visible = true;
 
 # Demo
 
-Under [test/integration](test/integration) you can view some basic usage cases. A more complex demonstration can be viewed under [demo/](demo/)
+Under [test/integration](test/integration) you can view some basic usage cases. A more complex demo can be seen live [here].(http://rharel.github.io/webgl-dm-voronoi/)
 
 # License
 
