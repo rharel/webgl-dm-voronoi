@@ -27,12 +27,12 @@
 
     var randomColor = (function() {
 
-      function mix(a, b) {
-        return (a + b) / 2;
-      }
+      function mix(a, b) { return (a + b) / 2; }
 
       return function () {
+
         return {
+
           r: mix(Math.random(), 1),
           g: mix(Math.random(), 1),
           b: mix(Math.random(), 1)
@@ -42,9 +42,12 @@
 
     function randomPosition() {
 
+      var padding_pct = 0.1;
+
       return {
-        x: randomInRange(0, CANVAS_WIDTH),
-        y: randomInRange(0, CANVAS_HEIGHT)
+
+        x: randomInRange(padding_pct * CANVAS_WIDTH, (1 - padding_pct) * CANVAS_WIDTH),
+        y: randomInRange(padding_pct * CANVAS_HEIGHT, (1 - padding_pct) * CANVAS_HEIGHT)
       };
     }
 
@@ -55,6 +58,7 @@
       for (var i = 0; i < N_LINES; ++i) {
 
         lines.push({
+
           a: randomPosition(),
           b: randomPosition(),
           color: randomColor()
@@ -69,7 +73,6 @@
       for (var i = 0; i < N_LINES; ++i) {
 
         var line = RANDOM_LINES[i];
-
         voronoi.line(line.a, line.b, line.color);
       }
     }
@@ -81,48 +84,27 @@
     <script>
       (function() {
 
-        var voronoi = new Voronoi.Diagram({
-          width: CANVAS_WIDTH, height: CANVAS_HEIGHT,
-          precision: 4,
-          markers: true
+        [4, 32].forEach(function(precision) {
+
+          var voronoi = new Voronoi.Diagram({
+
+            width: CANVAS_WIDTH, height: CANVAS_HEIGHT,
+            precision: precision,
+            markers: true
+          });
+
+          voronoi.line({x: 125, y: 50}, {x: 375, y: 50}, 'red');
+          voronoi.line({x: 125, y: 450}, {x: 375, y: 450}, 'blue');
+
+          voronoi.line({x: 250, y: 125}, {x: 250, y: 375}, 'green');
+          voronoi.line({x: 125, y: 250}, {x: 375, y: 250}, 'magenta');
+
+          voronoi.render();
+
+          document
+            .getElementById('static-test-content')
+            .appendChild(voronoi.canvas);
         });
-
-        voronoi.line({x: 125, y: 50}, {x: 375, y: 50}, 'red');
-        voronoi.line({x: 125, y: 450}, {x: 375, y: 450}, 'blue');
-
-        voronoi.line({x: 250, y: 125}, {x: 250, y: 375}, 'green');
-        voronoi.line({x: 125, y: 250}, {x: 375, y: 250}, 'magenta');
-
-        voronoi.render();
-
-        document
-          .getElementById('static-test-content')
-          .appendChild(voronoi.canvas);
-
-      })();
-    </script>
-
-    <script>
-      (function() {
-
-        var voronoi = new Voronoi.Diagram({
-          width: CANVAS_WIDTH, height: CANVAS_HEIGHT,
-          precision: 32,
-          markers: true
-        });
-
-        voronoi.line({x: 125, y: 50}, {x: 375, y: 50}, 'red');
-        voronoi.line({x: 125, y: 450}, {x: 375, y: 450}, 'blue');
-
-        voronoi.line({x: 250, y: 125}, {x: 250, y: 375}, 'green');
-        voronoi.line({x: 125, y: 250}, {x: 375, y: 250}, 'magenta');
-
-        voronoi.render();
-
-        document
-          .getElementById('static-test-content')
-          .appendChild(voronoi.canvas);
-
       })();
     </script>
   </div>
@@ -134,43 +116,25 @@
     <script>
       (function() {
 
-        var voronoi = new Voronoi.Diagram({
-          width: CANVAS_WIDTH, height: CANVAS_HEIGHT,
-          precision: 4,
-          markers: true
+        [4, 32].forEach(function(precision) {
+
+          var voronoi = new Voronoi.Diagram({
+
+            width: CANVAS_WIDTH, height: CANVAS_HEIGHT,
+            precision: precision,
+            markers: true
+          });
+
+          populate(voronoi);
+
+          voronoi.render();
+
+          document
+            .getElementById('random-test-content')
+            .appendChild(voronoi.canvas);
         });
-
-        populate(voronoi);
-
-        voronoi.render();
-
-        document
-          .getElementById('random-test-content')
-          .appendChild(voronoi.canvas);
-
-      })();
-    </script>
-
-    <script>
-      (function() {
-
-        var voronoi = new Voronoi.Diagram({
-          width: CANVAS_WIDTH, height: CANVAS_HEIGHT,
-          precision: 32,
-          markers: true
-        });
-
-        populate(voronoi);
-
-        voronoi.render();
-
-        document
-          .getElementById('random-test-content')
-          .appendChild(voronoi.canvas);
-
       })();
     </script>
   </div>
-
 </body>
 </html>
