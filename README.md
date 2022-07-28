@@ -6,7 +6,7 @@
 
 A live demo is worth a thousand words, so [here it is](http://rharel.github.io/webgl-dm-voronoi/). This is a voronoi diagram plotting library that takes advantage of the GPU pipeline in order to convert meshes into voronoi diagrams. A paper explaining the method used can be viewed [here](https://files.ifi.uzh.ch/vmml/SummerSeminars2010/PaperWriting/papers/p277-hoff.pdf).
 
-Currently, we support point and line-segment voronoi sites. In the future we intend to add on line-strips, polygons and general curves.
+This implementation supports point and line-segment voronoi sites.
 
 # Installation
 
